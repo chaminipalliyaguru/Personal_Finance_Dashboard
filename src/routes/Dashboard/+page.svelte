@@ -1,9 +1,3 @@
-<!-- <script>
-    import Navbar from "../components/Navbar.svelte";
-</script>
-
-<Navbar/> -->
-
 
 <h2 class="mt-10 ml-10 text-2xl font-bold italic">Current Status:</h2>
 <div class="grid grid-cols-2 gap-2">
