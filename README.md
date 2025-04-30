@@ -23,6 +23,4 @@ A sleek and interactive dashboard to manage personal finances — track income, 
   - [Chart.js](https://www.chartjs.org/) *(Simple, flexible charting library)*  
   - [D3.js](https://d3js.org/) *(For custom and powerful visualizations, if needed)*
 
-> ⚙️ You can explore the implementation by viewing the code and configurations inside the respective components and config files.
 
----
