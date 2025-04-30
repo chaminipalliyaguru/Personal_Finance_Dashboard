@@ -26,18 +26,3 @@ A sleek and interactive dashboard to manage personal finances — track income, 
 > ⚙️ You can explore the implementation by viewing the code and configurations inside the respective components and config files.
 
 ---
-
-## 📸 Screenshots
-
-*(Add screenshots here)*  
-Example:
-![Dashboard Screenshot](assets/dashboard.png)
-
----
-
-## 📂 Getting Started
-
-1. **Clone the repository**  
-   ```bash
-   git clone https://github.com/your-username/personal-finance-dashboard.git
-   cd personal-finance-dashboard
