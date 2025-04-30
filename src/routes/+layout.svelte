@@ -15,10 +15,10 @@
 						<a href="/" class="p-3 hover:text-red-900">Dashboard</a>
 					</li>
 					<li class="sm:inline-block">
-						<a href="/Investing" class="p-3 hover:text-red-900">Investing</a>
+						<a href="/investing" class="p-3 hover:text-red-900">Investing</a>
 					</li>
 					<li class="sm:inline-block">
-						<a href="/Payments" class="p-3 hover:text-red-900">Payments</a>
+						<a href="/payments" class="p-3 hover:text-red-900">Payments</a>
 					</li>
 				</ul>
 			</div>

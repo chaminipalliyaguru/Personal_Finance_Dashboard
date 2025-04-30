@@ -9,17 +9,14 @@
 <div class="grid grid-cols-2 gap-2">
 	<div class="relative mt-4 ml-10 w-1/2">
 		<div
-			class="space-y-3 rounded-xl bg-blue-300 p-6 text-left font-semibold text-gray-800 shadow-lg"
-		>
+			class="space-y-3 rounded-xl bg-blue-300 p-6 text-left font-semibold text-gray-800 shadow-lg">
 			<div class="text-lg">Net Income:</div>
 			<div class="text-3xl font-bold text-green-600">$500</div>
 
 			<div class="text-sm">
-				<span class="block"
-					>Total Income: <span class="font-medium text-green-700">$1000</span></span
-				>
-				<span class="block">Total Expenses: <span class="font-medium text-red-600">$500</span></span
-				>
+				<span class="block">
+					Total Income: <span class="font-medium text-green-700">$1000</span></span>
+				<span class="block">Total Expenses: <span class="font-medium text-red-600">$500</span></span>
 			</div>
 		</div>
 	</div>
