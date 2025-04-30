@@ -1,38 +1,43 @@
-# sv
+# 💰 Personal Finance Dashboard
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A sleek and interactive dashboard to manage personal finances — track income, expenses, and savings goals with visual insights to support smarter financial decisions.
 
-## Creating a project
+---
 
-If you're seeing this, you've probably already done this step. Congrats!
+## 🚀 Features
 
-```bash
-# create a new project in the current directory
-npx sv create
+- Add, update, and categorize income and expenses
+- Monthly/yearly summary with visual charts
+- Savings goal tracker
+- Responsive design for mobile and desktop
+- Exportable reports for budgeting or tax purposes
 
-# create a new project in my-app
-npx sv create my-app
-```
+---
 
-## Developing
+## 🖥️ Technology Stack
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- **Framework**: [Svelte 5](https://svelte.dev/blog/svelte-5)
+- **CSS Framework**: [Tailwind CSS](https://tailwindcss.com/)
+- **Chart Libraries**:  
+  - [Recharts](https://recharts.org/) *(React-based, if integrated with adapters)*  
+  - [Chart.js](https://www.chartjs.org/) *(Simple, flexible charting library)*  
+  - [D3.js](https://d3js.org/) *(For custom and powerful visualizations, if needed)*
 
-```bash
-npm run dev
+> ⚙️ You can explore the implementation by viewing the code and configurations inside the respective components and config files.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+---
 
-## Building
+## 📸 Screenshots
 
-To create a production version of your app:
+*(Add screenshots here)*  
+Example:
+![Dashboard Screenshot](assets/dashboard.png)
 
-```bash
-npm run build
-```
+---
 
-You can preview the production build with `npm run preview`.
+## 📂 Getting Started
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+1. **Clone the repository**  
+   ```bash
+   git clone https://github.com/your-username/personal-finance-dashboard.git
+   cd personal-finance-dashboard
