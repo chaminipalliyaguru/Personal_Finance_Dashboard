@@ -1,8 +1,12 @@
 <script>
+	import Investing from "../routes/Investing/+page.svelte";
+
 	let source = '';
 	let amount = '';
 	let date = '';
-	let output = '';
+	let output = false;
+	let successMessage = '';
+
 
 	function setLocalData() {
 		
@@ -22,53 +26,30 @@
 
 		// Save back to local storage
 		localStorage.setItem('incomeList', JSON.stringify(existingList));
+		successMessage = 'Income successfully added!';
+		output = true;
+
+		// Remove message after 3 seconds
+		setTimeout(() => {
+			successMessage = '';
+		}, 3000);
+
 
 		// Clear fields
 		source = '';
 		amount = '';
-		date = '';
-	
-		// localStorage.setItem("source", source);
-		// localStorage.setItem("amount", amount);
-		// localStorage.setItem("date",date);
+		date = '';		
   }
 
-// 	function getLocalData() {
-// 		const source = localStorage.getItem('source');
-// 		const amount = localStorage.getItem('amount');
-// 		const date = localStorage.getItem('date');
-
-// 		output = `
-//     <strong>Source:</strong> ${source}<br>
-//     <strong>Amount:</strong> ${amount}<br>
-//     <strong>Date:</strong> ${date}
-//   `;
-// 	}
-
-// Get and show all income entries
-
-// function getLocalData() {
-// 		const data = JSON.parse(localStorage.getItem('incomeList')) || [];
-
-// 		if (data.length === 0) {
-// 			output = '<p>No income records found.</p>';
-// 			return;
-// 		}
-
-// 		output = data
-// 			.map(
-// 				(entry, index) => `
-// 					<p><strong>Record ${index + 1}</strong><br>
-// 					Source: ${entry.source}<br>
-// 					Amount: ${entry.amount}<br>
-// 					Date: ${entry.date}</p><hr>
-// 				`
-// 			)
-// 			.join('');
-// 	}
-
-
 </script>
+
+
+
+{#if output}
+		<p class="text-xl font-semibold bg-green-100 border text-green-800 rounded-lg text-center shadow-md animate-fade-in">{successMessage}</p>
+	<Investing />
+{:else}
+
 
 <div class="mx-auto mt-6 max-w-md rounded bg-white px-8 pt-6 pb-8 shadow-md">
 	<h2 class="mb-4 text-2xl font-bold text-blue-900">Add New Income</h2>
@@ -111,8 +92,6 @@
 		>
 			Add Income
 		</button>
-	</form>
-	
+	</form>		
 </div>
-
-<!-- {@html output} -->
+{/if}
