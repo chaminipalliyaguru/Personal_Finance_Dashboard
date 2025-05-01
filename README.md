@@ -1,3 +1,4 @@
+
 # 💰 Personal Finance Dashboard
 
 A sleek and interactive dashboard to manage personal finances — track income, expenses, and savings goals with visual insights to support smarter financial decisions.
@@ -22,5 +23,3 @@ A sleek and interactive dashboard to manage personal finances — track income, 
   - [Recharts](https://recharts.org/) *(React-based, if integrated with adapters)*  
   - [Chart.js](https://www.chartjs.org/) *(Simple, flexible charting library)*  
   - [D3.js](https://d3js.org/) *(For custom and powerful visualizations, if needed)*
-
-
