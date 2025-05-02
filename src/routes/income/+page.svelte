@@ -62,6 +62,12 @@
 		}
 	}
 
+	function clearFilter() {
+		fromDate = '';
+		toDate = '';
+		filteredList = [...incomeList];
+	}
+
 	function editEntry(index: number) {
 		const entry = incomeList[index];
 		if (!entry) return;
@@ -99,7 +105,7 @@
 				<IncomeMethodItem {entry} {index} {deleteEntry} {editEntry} />
 			{/each}
 		{:else}
-			<FeedbackArea {fromDate} {toDate} {filterByDate} />
+		<FeedbackArea {fromDate} {toDate} {clearFilter} />
 		{/if}
 	</div>
 {/if}
