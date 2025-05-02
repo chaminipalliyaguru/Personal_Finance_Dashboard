@@ -1,11 +1,12 @@
-<script>
+<script lang="ts">
 	import { browser } from '$app/environment';
 	import NewExpenses from '../../components/newExpenses.svelte';
 	import { editableExpense } from '../../store/expenseStore';
+	import type { ExpenseEntry } from '../../types/types';
 
 	let showComponent = false;
-	let expenseList = [];
-	let filteredList = [];
+	let expenseList: ExpenseEntry[] = [];
+	let filteredList: ExpenseEntry[] = [];
 	let fromDate = '';
 	let toDate = '';
 
@@ -20,8 +21,9 @@
 
 	function loadData() {
 		if (!browser) return;
-
-		expenseList = JSON.parse(localStorage.getItem('expenseList')) || [];
+		
+		const storedData = localStorage.getItem('expenseList')
+		expenseList = storedData ? JSON.parse(storedData) : [];
 		filteredList = [...expenseList];
 	}
 
@@ -37,7 +39,7 @@
 		});
 	}
 
-	function deleteEntry(index) {
+	function deleteEntry(index: number) {
 		if (confirm('Are you sure you want to delete this entry?')) {
 			expenseList.splice(index, 1);
 			localStorage.setItem('incomeList', JSON.stringify(expenseList));
@@ -45,8 +47,10 @@
 		}
 	}
 
-	function editEntry(index) {
-		editableExpense.set(filteredList[index]);
+	function editEntry(index: number) {
+		const entry = expenseList[index];
+		if (!entry) return;
+		editableExpense.set(entry);
 		showComponent = true;
 	}
 

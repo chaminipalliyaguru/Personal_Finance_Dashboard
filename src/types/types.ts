@@ -3,3 +3,9 @@ export interface IncomeEntry {
 	amount: number;
 	date: string;
 }
+
+export interface ExpenseEntry {
+    title: string;
+    amount: number;
+    date: string;
+}
