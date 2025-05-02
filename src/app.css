@@ -1,6 +1,9 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+@custom-variant dark (&:where(.dark, .dark *));
+
+
 
 @keyframes fade-in {
 	from { opacity: 0; transform: translateY(-10px); }
@@ -9,4 +12,9 @@
 
 .animate-fade-in {
 	animation: fade-in 0.4s ease-out;
+}
+
+/*  make the body bg color dark on dark mode */
+body {
+	@apply bg-white dark:bg-gray-900;
 }
