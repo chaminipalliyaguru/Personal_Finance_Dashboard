@@ -7,8 +7,8 @@
 	let showComponent = false;
 	let incomeList: IncomeEntry[] = [];
 	let filteredList: IncomeEntry[] = [];
-	let fromDate = '';
-	let toDate = '';
+	let fromDate: Date | null = null;
+	let toDate: Date | null = null;
 
 	function handleClick() {
 		editableIncome.set(null);
