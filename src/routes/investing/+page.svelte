@@ -1,11 +1,12 @@
-<script>
+<script lang="ts">
 	import { browser } from '$app/environment';
 	import NewIncome from '../../components/newIncome.svelte';
 	import { editableIncome } from '../../store/incomeStore';
+	import type { IncomeEntry } from '../../types/types';
 
 	let showComponent = false;
-	let incomeList = [];
-	let filteredList = [];
+	let incomeList: IncomeEntry[] = [];
+	let filteredList: IncomeEntry[] = [];
 	let fromDate = '';
 	let toDate = '';
 
@@ -20,8 +21,9 @@
 
 	function loadData() {
 		if (!browser) return;
-
-		incomeList = JSON.parse(localStorage.getItem('incomeList')) || [];
+		// get the data from local storage
+		const storedData = localStorage.getItem('incomeList');
+		incomeList = storedData ? JSON.parse(storedData) : [];
 		filteredList = [...incomeList];
 	}
 
@@ -37,7 +39,7 @@
 		});
 	}
 
-	function deleteEntry(index) {
+	function deleteEntry(index: number) {
 		if (confirm('Are you sure you want to delete this entry?')) {
 			incomeList.splice(index, 1);
 			localStorage.setItem('incomeList', JSON.stringify(incomeList));
@@ -45,8 +47,10 @@
 		}
 	}
 
-	function editEntry(index) {
-		editableIncome.set(filteredList[index]);
+	function editEntry(index: number) {
+		const entry = incomeList[index];
+		if (!entry) return;
+		editableIncome.set(entry);
 		showComponent = true;
 	}
 
@@ -56,35 +60,45 @@
 </script>
 
 {#if showComponent}
-	<NewIncome on:close={handleCloseForm} />
+	<div class="m-5">
+		<NewIncome on:close={handleCloseForm} />
+	</div>
 {:else}
 	<!-- Updated styles for dark mode -->
-	<div class="mx-auto max-w-3xl bg-white p-6 text-gray-900 dark:bg-gray-800 dark:text-gray-100">
+	<div
+		class="mx-auto mt-12 max-w-3xl bg-white p-6 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
+	>
+		<button
+			on:click={handleClick}
+			class="my-5 cursor-pointer rounded bg-blue-600 px-6 py-2 font-semibold text-white shadow transition duration-200 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+		>
+			Add Income
+		</button>
 		<!-- Top Bar -->
+		<p class="text-sm">Filter Records by Date:</p>
 		<div class="mb-6 flex items-center justify-between">
-			<div class="space-x-4">
-				<input
-					type="date"
-					bind:value={fromDate}
-					class="rounded border bg-gray-100 px-3 py-1 text-gray-900 dark:bg-gray-700 dark:text-gray-100"
-					placeholder="From"
-					on:change={filterByDate}
-				/>
-				<input
-					type="date"
-					bind:value={toDate}
-					class="rounded border bg-gray-100 px-3 py-1 text-gray-900 dark:bg-gray-700 dark:text-gray-100"
-					placeholder="To"
-					on:change={filterByDate}
-				/>
+			<div class="items-center space-x-4 md:flex">
+				<div>
+					<p class="text-sm">From:</p>
+					<input
+						type="date"
+						bind:value={fromDate}
+						class="rounded border bg-gray-100 px-3 py-1 text-gray-900 dark:bg-gray-700 dark:text-gray-100"
+						placeholder="From"
+						on:change={filterByDate}
+					/>
+				</div>
+				<div>
+					<p class="text-sm">To:</p>
+					<input
+						type="date"
+						bind:value={toDate}
+						class="rounded border bg-gray-100 px-3 py-1 text-gray-900 dark:bg-gray-700 dark:text-gray-100"
+						placeholder="To"
+						on:change={filterByDate}
+					/>
+				</div>
 			</div>
-
-			<button
-				on:click={handleClick}
-				class="rounded bg-blue-600 px-6 py-2 font-semibold text-white shadow transition duration-200 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
-			>
-				Add Income
-			</button>
 		</div>
 
 		<!-- Records Section -->
@@ -117,6 +131,19 @@
 			{/each}
 		{:else}
 			<p class="text-gray-500 dark:text-gray-400">No income records found for selected range.</p>
+			<!--  clear filter button -->
+			{#if fromDate || toDate}
+				<button
+					on:click={() => {
+						fromDate = '';
+						toDate = '';
+						filterByDate();
+					}}
+					class="mt-4 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+				>
+					Clear Filter
+				</button>
+			{/if}
 		{/if}
 	</div>
 {/if}
