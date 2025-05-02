@@ -1,12 +1,12 @@
 <script>
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	import LineChart from '../components/LineChart.svelte';
-	import PieChart from '../components/PieChart.svelte'; // Add this
+	import PieChart from '../components/PieChart.svelte';
 
-	let incomeList = JSON.parse(localStorage.getItem('incomeList')) || [];
-	let expenseList = JSON.parse(localStorage.getItem('expenseList')) || [];
-
-	let income = incomeList.reduce((sum, item) => sum + Number(item.amount), 0);
-	let expense = expenseList.reduce((sum, item) => sum + Number(item.amount), 0);
+	let incomeList = [];
+	let expenseList = [];
+	let saved = 0;
 
 	let labels = [
 		'Jan',
@@ -33,55 +33,66 @@
 		return monthlyTotals;
 	}
 
-	let expenses = getMonthlyTotals(expenseList);
-	let incomes = getMonthlyTotals(incomeList);
+	onMount(() => {
+		if (browser) {
+			const incomeRaw = localStorage.getItem('incomeList');
+			const expenseRaw = localStorage.getItem('expenseList');
+			const savingsRaw = localStorage.getItem('savingsGoals');
 
-	// Pie chart related states
-	let saved = 0;
+			incomeList = incomeRaw ? JSON.parse(incomeRaw) : [];
+			expenseList = expenseRaw ? JSON.parse(expenseRaw) : [];
 
-	function loadSavingsFromLocalStorage() {
-		const savingsGoals = JSON.parse(localStorage.getItem('savingsGoals') || '[]');
-		saved = savingsGoals.reduce((total, goal) => total + (goal.saved || 0), 0);
-	}
+			const savingsGoals = savingsRaw ? JSON.parse(savingsRaw) : [];
+			saved = savingsGoals.reduce((total, goal) => total + (goal.saved || 0), 0);
+		}
+	});
 
-	loadSavingsFromLocalStorage();
+	// Reactive derived values
+	$: income = incomeList.reduce((sum, item) => sum + Number(item.amount), 0);
+	$: expense = expenseList.reduce((sum, item) => sum + Number(item.amount), 0);
+	$: incomes = getMonthlyTotals(incomeList);
+	$: expenses = getMonthlyTotals(expenseList);
 </script>
 
-
-
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4">
+<div class="grid grid-cols-1 gap-4 px-4 md:grid-cols-2">
 	<!-- Current Status Section -->
-	<div class="w-full md:w-1/2 mx-auto md:ml-10 mt-4">
-		<h2 class="mt-6 md:mt-10 mb-6 text-2xl font-bold italic">Current Status:</h2>
-		<div class="space-y-3 rounded-xl bg-blue-300 p-6 text-left font-semibold text-gray-800 shadow-lg h-64">
-			<div class="space-y-4 text-left">
-				<div class="text-2xl font-semibold text-slate-800">Net Income:</div>
-				<div class="text-4xl font-extrabold text-green-600 mb-4">${income - expense}</div>
-			  
-				<div class="text-base md:text-lg text-slate-700 space-y-2">
-				  <div class="flex items-center justify-between">
-					<span>Total Income:</span>
-					<span class="font-semibold text-green-700">${income}</span>
-				  </div>
-				  <div class="flex items-center justify-between">
-					<span>Total Expenses:</span>
-					<span class="font-semibold text-red-600">${expense}</span>
-				  </div>
-				</div>
-			  </div>
-			  
+	<div class="mx-auto mt-4 w-full md:ml-10 md:w-1/2">
+		<h2 class="mt-6 mb-6 text-2xl font-bold italic md:mt-10">Current Status:</h2>
+		<div
+	class="h-[22.5rem] w-full max-w-md space-y-3 rounded-xl bg-blue-300 p-6 text-left font-semibold text-gray-800 md:max-w-lg lg:max-w-xl flex flex-col justify-between"
+>
+	<div class="space-y-4 text-left">
+		<div class="text-2xl font-semibold text-slate-800">Net Income:</div>
+		<div class="text-4xl font-extrabold text-green-600">${income - expense}</div>
+	</div>
+
+	<div class="space-y-2 text-base text-slate-700 md:text-lg">
+		<div class="flex items-center justify-between">
+			<span>Total Income:</span>
+			<span class="font-semibold text-green-700">${income}</span>
+		</div>
+		<div class="flex items-center justify-between">
+			<span>Total Expenses:</span>
+			<span class="font-semibold text-red-600">${expense}</span>
 		</div>
 	</div>
-	
+
+	<div class="pt-4 text-sm text-slate-700 italic text-center">
+		Financial summary as of today.
+	</div>
+</div>
+
+	</div>
+
 	<!-- Pie Chart Section -->
-	<div class="relative mt-10 md:mt-14 md:ml-10 w-full">
+	<div class="relative mt-10 w-full md:mt-14 md:ml-10">
 		<h2 class="text-2xl font-bold italic">Monthly Summary</h2>
 		<PieChart {saved} invested={income} expenses={expense} />
 	</div>
 </div>
 
 <!-- Monthly Line Chart Section -->
-<section class="max-w-8xl mx-auto p-6 mt-12 md:ml-10 md:mr-10">
-	<h2 class="mb-4 text-2xl font-bold text-slate-800 ">Overview</h2>
+<section class="max-w-8xl mx-auto mt-12 p-6 md:mr-10 md:ml-10">
+	<h2 class="mb-4 text-2xl font-bold text-slate-800">Overview</h2>
 	<LineChart {labels} {expenses} {incomes} />
 </section>
