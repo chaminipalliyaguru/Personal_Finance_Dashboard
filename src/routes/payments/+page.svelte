@@ -1,18 +1,22 @@
 <script>
 	import { browser } from '$app/environment';
-  import NewExpenses from '../../components/newExpenses.svelte';
+  	import NewExpenses from '../../components/newExpenses.svelte';
+	import { editableExpense } from '../../store/expenseStore';
 
 	let showComponent = false;
 	let expenseList = [];
 	let filteredList = [];
-	
-
 	let fromDate = '';
 	let toDate = '';
 
 	function handleClick() {
+		editableExpense.set(null); 
 		showComponent = true;
 	}
+
+	function handleCloseForm() {
+  showComponent = false;
+}
 
 	function loadData() {
 		if (!browser) return;
@@ -42,7 +46,8 @@
 	}
 
 	function editEntry(index) {
-		alert(`Edit logic can be added here for index ${index}`);
+		editableExpense.set(filteredList[index]); 
+		showComponent = true;
 	}
 
 	$: if (!showComponent && browser) {
@@ -51,7 +56,7 @@
 </script>
 
 {#if showComponent}
-		<NewExpenses />
+<NewExpenses on:close={handleCloseForm} />
 	{:else}
 
 <!-- Page Container -->
@@ -84,9 +89,6 @@
 		</button>
 	</div>
 
-	<!-- Conditional Component -->
-	
-
 	<!-- Records Section -->
 	{#if filteredList.length > 0}
 		{#each filteredList as entry, index}
@@ -100,7 +102,7 @@
 					</button>
 				</div>
 				<p class="font-bold text-blue-700">Record {index + 1}</p>
-				<p><span class="font-semibold">Source:</span> {entry.source}</p>
+				<p><span class="font-semibold">Source:</span> {entry.title}</p>
 				<p><span class="font-semibold">Amount:</span> {entry.amount}</p>
 				<p><span class="font-semibold">Date:</span> {entry.date}</p>
 			</div>
