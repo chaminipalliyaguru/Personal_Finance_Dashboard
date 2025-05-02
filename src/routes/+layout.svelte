@@ -52,12 +52,12 @@
 				</li>
 				<li>
 					<a href="/investing" class="px-3 py-2 transition hover:text-red-300" on:click={closeMenu}
-						>Investing</a
+						>Income</a
 					>
 				</li>
 				<li>
 					<a href="/payments" class="px-3 py-2 transition hover:text-red-300" on:click={closeMenu}
-						>Payments</a
+						>Expense</a
 					>
 				</li>
 				<li>
