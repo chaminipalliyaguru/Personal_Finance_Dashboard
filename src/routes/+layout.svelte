@@ -20,6 +20,9 @@
 					<li class="sm:inline-block">
 						<a href="/payments" class="p-3 hover:text-red-900">Payments</a>
 					</li>
+					<li class="sm:inline-block">
+						<a href="/saving_goals" class="p-3 hover:text-red-900">Saving Goals</a>
+					</li>
 				</ul>
 			</div>
 		</div>
