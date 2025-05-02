@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Investing from "../routes/Investing/+page.svelte";
+	import Investing from "../routes/income/+page.svelte";
 	import { editableIncome } from "../store/incomeStore";
 	import { onMount } from "svelte";
 
