@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Investing from "../routes/Investing/+page.svelte";
 	import { editableIncome } from "../store/incomeStore";
 	import { onMount } from "svelte";
@@ -71,7 +71,7 @@
 </script>
 
 {#if output}
-	<p class="text-xl font-semibold bg-green-100 border text-green-800 rounded-lg text-center shadow-md animate-fade-in">
+	<p class="text-xl font-semibold bg-green-100 text-green-800 rounded-lg text-center shadow-md animate-fade-in">
 		{successMessage}
 	</p>
 	<Investing />

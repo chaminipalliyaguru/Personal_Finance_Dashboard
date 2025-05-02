@@ -62,7 +62,7 @@
 </script>
 
 {#if output}
-	<p class="text-xl font-semibold bg-green-100 border text-green-800 rounded-lg text-center shadow-md animate-fade-in">{successMessage}</p>
+	<p class="text-xl font-semibold bg-green-100 text-green-800 rounded-lg text-center shadow-md animate-fade-in">{successMessage}</p>
 {:else}
 <div class="relative max-w-md mx-auto mt-6 bg-white shadow-md rounded px-8 pt-6 pb-8">
 
