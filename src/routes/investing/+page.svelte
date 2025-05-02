@@ -1,18 +1,22 @@
 <script>
 	import { browser } from '$app/environment';
 	import NewIncome from '../../components/newIncome.svelte';
+	import { editableIncome } from '../../store/incomeStore';
 
 	let showComponent = false;
 	let incomeList = [];
 	let filteredList = [];
-	
-
 	let fromDate = '';
 	let toDate = '';
 
 	function handleClick() {
+		editableIncome.set(null);
 		showComponent = true;
 	}
+
+	function handleCloseForm() {
+  showComponent = false;
+}
 
 	function loadData() {
 		if (!browser) return;
@@ -42,7 +46,8 @@
 	}
 
 	function editEntry(index) {
-		alert(`Edit logic can be added here for index ${index}`);
+		editableIncome.set(filteredList[index]);
+		showComponent = true;
 	}
 
 	$: if (!showComponent && browser) {
@@ -51,7 +56,7 @@
 </script>
 
 {#if showComponent}
-		<NewIncome />
+		<NewIncome on:close={handleCloseForm}/>
 	{:else}
 
 <!-- Page Container -->
