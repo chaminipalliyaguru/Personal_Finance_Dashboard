@@ -1,7 +1,17 @@
 <script lang="ts">
+	import { createEventDispatcher, type EventDispatcher } from 'svelte';
+	import type { FilterOptions } from '../../../types/types';
+
 	export let fromDate: string;
 	export let toDate: string;
 	export let filterByDate: () => void;
+
+	const dispatch: EventDispatcher<{ dateChange: FilterOptions }> = createEventDispatcher();
+
+	function handleDateChange() {
+		dispatch('dateChange', { fromDate, toDate });
+		filterByDate();
+	}
 </script>
 
 <section>
@@ -15,7 +25,7 @@
 					bind:value={fromDate}
 					class="rounded border bg-gray-100 px-3 py-1 text-gray-900 dark:bg-gray-700 dark:text-gray-100"
 					placeholder="From"
-					on:change={filterByDate}
+					on:change={handleDateChange}
 				/>
 			</div>
 			<div>
@@ -25,7 +35,7 @@
 					bind:value={toDate}
 					class="rounded border bg-gray-100 px-3 py-1 text-gray-900 dark:bg-gray-700 dark:text-gray-100"
 					placeholder="To"
-					on:change={filterByDate}
+					on:change={handleDateChange}
 				/>
 			</div>
 		</div>

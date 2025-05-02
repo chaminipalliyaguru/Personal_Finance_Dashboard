@@ -6,7 +6,7 @@
 	import IncomeMethodItem from '../../components/feature/income/IncomeMethodItem.svelte';
 	import NewIncome from '../../components/newIncome.svelte';
 	import { editableIncome } from '../../store/incomeStore';
-	import type { IncomeEntry } from '../../types/types';
+	import type { FilterOptions, IncomeEntry } from '../../types/types';
 
 	let showNewIncomeComponent = false;
 	let incomeList: IncomeEntry[] = [];
@@ -30,6 +30,11 @@
 		const storedData = localStorage.getItem('incomeList');
 		incomeList = storedData ? JSON.parse(storedData) : [];
 		filteredList = [...incomeList];
+	}
+
+	function handleDateChange(event: CustomEvent<FilterOptions>) {
+		fromDate = event.detail.fromDate;
+		toDate = event.detail.toDate;
 	}
 
 	function filterByDate() {
@@ -82,7 +87,11 @@
 		<AddIncomButton {handleNewIncomeCreate} />
 
 		<!-- Date Filter Component -->
-		<DateFilter {fromDate} {toDate} {filterByDate} />
+		{#if incomeList.length > 0}
+			<DateFilter bind:fromDate bind:toDate {filterByDate} on:dateChange={handleDateChange} />
+		{:else}
+			<p class="text-gray-500 dark:text-gray-400">No income records available.</p>
+		{/if}
 
 		<!-- Records Section -->
 		{#if filteredList.length > 0}
