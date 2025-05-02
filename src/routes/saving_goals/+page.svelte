@@ -2,15 +2,28 @@
 	import { writable } from 'svelte/store';
 
 	function createGoalsStore() {
-		const storedGoals = JSON.parse(localStorage.getItem('savingsGoals') || '[]');
-		const { subscribe, set, update } = writable(storedGoals);
+	let storedGoals = [];
 
+	if (typeof window !== 'undefined') {
+		try {
+			storedGoals = JSON.parse(localStorage.getItem('savingsGoals') || '[]');
+		} catch (e) {
+			console.error('Error parsing savingsGoals from localStorage', e);
+			storedGoals = [];
+		}
+	}
+
+	const { subscribe, set, update } = writable(storedGoals);
+
+	if (typeof window !== 'undefined') {
 		subscribe(value => {
 			localStorage.setItem('savingsGoals', JSON.stringify(value));
 		});
-
-		return { subscribe, set, update };
 	}
+
+	return { subscribe, set, update };
+}
+
 
 	let goals = createGoalsStore();
 	let goalName = '';
