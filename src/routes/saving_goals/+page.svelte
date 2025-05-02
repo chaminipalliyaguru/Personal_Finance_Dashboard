@@ -19,7 +19,7 @@
 	let targetDate = '';
 	let editIndex = null;
 
-	function addOrUpdateGoal() {
+	function addGoal() {
 		const newGoal = {
 			name: goalName,
 			target: parseFloat(targetAmount),
@@ -52,13 +52,15 @@
 	}
 
 	function deleteGoal(index) {
+	if (confirm("Are you sure you want to delete this goal?")) {
 		goals.update(gs => gs.filter((_, i) => i !== index));
 	}
+}
 </script>
 
 <div class="p-4 max-w-xl mx-auto">
-	<h2 class="text-2xl font-bold mb-4">Add or Edit Savings Goal</h2>
-	<form on:submit|preventDefault={addOrUpdateGoal} class="space-y-3">
+	<h2 class="text-2xl font-bold mb-4">Savings Goal</h2>
+	<form on:submit|preventDefault={addGoal} class="space-y-3">
 		<input
 			placeholder="Goal name"
 			bind:value={goalName}
@@ -86,9 +88,12 @@
 		</button>
 	</form>
 
-	<h2 class="text-2xl font-bold mt-8 mb-4">Savings Goals</h2>
+
+</div>
+<div class="px-4 sm:px-6 lg:px-8">
+	<h2 class="text-2xl font-bold mt-8 mb-4">Goals Collection</h2>
 	<div class="overflow-x-auto">
-		<table class="w-full border border-gray-300 text-sm md:text-base">
+		<table class="min-w-full border border-gray-300 text-sm md:text-base">
 			<thead>
 				<tr class="bg-gray-100 text-left">
 					<th class="p-2">Goal Name</th>
@@ -123,3 +128,5 @@
 		</table>
 	</div>
 </div>
+
+
