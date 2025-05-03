@@ -25,12 +25,12 @@
 
 	function loadData() {
 		if (!browser) return;
-
 		// get the data from local storage
 		const storedData = localStorage.getItem('incomeList');
 		incomeList = storedData ? JSON.parse(storedData) : [];
 		filteredList = [...incomeList];
 	}
+
 
 	function handleDateChange(event: CustomEvent<FilterOptions>) {
 		fromDate = event.detail.fromDate;
@@ -43,10 +43,12 @@
 			return;
 		}
 
+
 		if (new Date(fromDate) > new Date(toDate)) {
 			alert('Invalid date range. Please select a valid range.');
 			return;
 		}
+
 
 		filteredList = incomeList.filter((entry) => {
 			const entryDate = new Date(entry.date);
@@ -62,6 +64,7 @@
 		}
 	}
 
+
 	function clearFilter() {
 		fromDate = '';
 		toDate = '';
@@ -72,15 +75,21 @@
 		const entry = incomeList[index];
 		if (!entry) return;
 		editableIncome.set(entry);
+
 		showNewIncomeComponent = true;
 	}
 
 	$: if (!showNewIncomeComponent && browser) {
+		showComponent = true;
+	}
+
+	$: if (!showComponent && browser) {
 		loadData();
 	}
 </script>
 
-{#if showNewIncomeComponent}
+
+{#if showComponent}
 	<div class="m-5">
 		<NewIncome on:close={handleCloseForm} />
 	</div>
@@ -89,6 +98,7 @@
 	<div
 		class="mx-auto mt-12 max-w-3xl bg-white p-6 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
 	>
+
 	<div class="grid grid-cols-2">
 		<div>
 		<!-- Date Filter Component -->
@@ -105,13 +115,16 @@
 	</div>
 	</div>
 
+
 		<!-- Records Section -->
 		{#if filteredList.length > 0}
 			{#each filteredList as entry, index}
+
 				<IncomeMethodItem {entry} {index} {deleteEntry} {editEntry} />
 			{/each}
 		{:else}
 		<FeedbackArea {fromDate} {toDate} {clearFilter} />
+
 		{/if}
 	</div>
 {/if}

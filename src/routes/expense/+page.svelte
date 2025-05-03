@@ -5,6 +5,7 @@
 	import type { ExpenseEntry } from '../../types/types';
 	import DateFilter from '../../components/feature/income/DateFilter.svelte';
 
+
 	let showComponent = false;
 	let expenseList: ExpenseEntry[] = [];
 	let filteredList: ExpenseEntry[] = [];
@@ -41,12 +42,13 @@
 	}
 
 	function deleteEntry(index: number) {
-	if (confirm('Are you sure you want to delete this entry?')) {
-		expenseList.splice(index, 1);
-		localStorage.setItem('expenseList', JSON.stringify(expenseList)); // <-- fixed key
-		filterByDate();
+
+		if (confirm('Are you sure you want to delete this entry?')) {
+			expenseList.splice(index, 1);
+			localStorage.setItem('incomeList', JSON.stringify(expenseList));
+			filterByDate();
+		}
 	}
-}
 
 
 	function editEntry(index: number) {
@@ -60,10 +62,12 @@
 		loadData();
 	}
 
+
 	function handleDateChange(event: CustomEvent<FilterOptions>) {
 		fromDate = event.detail.fromDate;
 		toDate = event.detail.toDate;
 	}
+
 
 </script>
 
@@ -80,6 +84,7 @@
 		{:else}
 			<p class="text-gray-500 dark:text-gray-400">No income records available.</p>
 		{/if}
+
 
 			<button
 				on:click={handleClick}
