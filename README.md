@@ -33,8 +33,8 @@ npm -v
 ### Installation
 1. Clone the repo
 ```bash
-git clone https://github.com/your-username/personal-finance-dashboard.git
-cd personal-finance-dashboard
+git clone https://github.com/chaminipalliyaguru/Personal_Finance_Dashboard.git
+cd personal_finance_dashboard
 ```
 
 2. Install dependencies
