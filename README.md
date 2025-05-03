@@ -1,25 +1,55 @@
-
 # 💰 Personal Finance Dashboard
 
-A sleek and interactive dashboard to manage personal finances — track income, expenses, and savings goals with visual insights to support smarter financial decisions.
+A simple and elegant personal finance dashboard built with **Svelte** to help users manage their income, expenses, and savings. The dashboard provides a clean UI and visual insights to track and plan finances effectively.
 
----
 
-## 🚀 Features
+## 🔧 Features
 
-- Add, update, and categorize income and expenses
-- Monthly/yearly summary with visual charts
-- Savings goal tracker
-- Responsive design for mobile and desktop
-- Exportable reports for budgeting or tax purposes
+- 💸 Track income and expenses
+- 📈 Line chart visualization of monthly trends
+- 🧾 Categorize transactions (e.g., food, bills, transport)
+- 💡 Insights for better financial planning
+- 🔍 Filter and search transactions
+- 💾 Persistent data with local storage or backend integration
 
----
+## 🛠️ Tech Stack
 
-## 🖥️ Technology Stack
+- **Frontend:** [Svelte](https://svelte.dev/), Tailwind CSS
+- **Charts:** Chart.js | Recharts | D3 (specify which one you're using)
+- **State Management:** Svelte Stores
+- **Optional Backend:** Node.js / Express (if you plan to persist data)
 
-- **Framework**: [Svelte 5](https://svelte.dev/blog/svelte-5)
-- **CSS Framework**: [Tailwind CSS](https://tailwindcss.com/)
-- **Chart Libraries**:  
-  - [Recharts](https://recharts.org/) *(React-based, if integrated with adapters)*  
-  - [Chart.js](https://www.chartjs.org/) *(Simple, flexible charting library)*  
-  - [D3.js](https://d3js.org/) *(For custom and powerful visualizations, if needed)*
+## 🚀 Getting Started
+
+### Prerequisites
+
+Make sure you have Node.js and npm installed:
+
+```bash
+node -v
+npm -v
+```
+
+### Installation
+1. Clone the repo
+```bash
+git clone https://github.com/your-username/personal-finance-dashboard.git
+cd personal-finance-dashboard
+```
+
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Run the development server
+```bash
+npm run dev
+```
+
+4. Open in browser
+Go to http://localhost:5173 or as specified in your terminal.
+
+
+### 📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
