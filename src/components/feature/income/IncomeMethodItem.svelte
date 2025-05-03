@@ -27,7 +27,7 @@
 		</button>
 	</div>
 	<p class="font-bold text-blue-700 dark:text-blue-400">Record {index + 1}</p>
-	<p><span class="font-semibold">Source:</span> {entry.source}</p>
+	<p><span class="font-semibold">Source:</span> {entry.title}</p>
 	<p><span class="font-semibold">Amount:</span> {entry.amount}</p>
 	<p><span class="font-semibold">Date:</span> {entry.date}</p>
 </div>

@@ -86,7 +86,7 @@
 	<!-- Income Pie Chart -->
 	<div class="relative mt-10 w-full md:mt-14 md:ml-10">
 		<PieChart
-			title="Month's Income"
+			title="Month Income"
 			labels={thisMonthIncomes.map((item) => item.title)}
 			data={thisMonthIncomes.map((item) => Number(item.amount))}
 		/>
@@ -95,7 +95,7 @@
 	<!-- Expense Pie Chart -->
 	<div class="relative mt-10 w-full md:mt-14 md:ml-10">
 		<PieChart
-			title="Month's Expense"
+			title="Month Expense"
 			labels={thisMonthExpenses.map((item) => item.title)}
 			data={thisMonthExpenses.map((item) => Number(item.amount))}
 		/>
