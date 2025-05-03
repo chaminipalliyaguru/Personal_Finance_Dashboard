@@ -30,7 +30,7 @@
 				datasets: [
 					{
 						label: title || 'Pie Chart',
-						data: data.length ? data : [1], // avoid empty pie error
+						data: data.length ? data : [1], 
 						backgroundColor: colors.length ? colors : defaultColors.slice(0, data.length || 1),
 						borderWidth: 1
 					}
@@ -49,6 +49,7 @@
 					},
 					title: {
 						display: true,
+						color: "blue",
 						text: title || 'Pie Chart',
 						font: {
 							size: 18
