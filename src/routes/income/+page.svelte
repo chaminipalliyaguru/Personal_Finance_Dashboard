@@ -89,15 +89,21 @@
 	<div
 		class="mx-auto mt-12 max-w-3xl bg-white p-6 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
 	>
-		<!-- Add income button -->
-		<AddIncomButton {handleNewIncomeCreate} />
-
+	<div class="grid grid-cols-2">
+		<div>
 		<!-- Date Filter Component -->
 		{#if incomeList.length > 0}
 			<DateFilter bind:fromDate bind:toDate {filterByDate} on:dateChange={handleDateChange} />
 		{:else}
 			<p class="text-gray-500 dark:text-gray-400">No income records available.</p>
 		{/if}
+	</div>
+
+		<div class="ml-56">
+		<!-- Add income button -->
+		<AddIncomButton {handleNewIncomeCreate} />
+	</div>
+	</div>
 
 		<!-- Records Section -->
 		{#if filteredList.length > 0}

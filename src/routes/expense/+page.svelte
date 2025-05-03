@@ -3,6 +3,7 @@
 	import NewExpenses from '../../components/newExpenses.svelte';
 	import { editableExpense } from '../../store/expenseStore';
 	import type { ExpenseEntry } from '../../types/types';
+	import DateFilter from '../../components/feature/income/DateFilter.svelte';
 
 	let showComponent = false;
 	let expenseList: ExpenseEntry[] = [];
@@ -40,12 +41,13 @@
 	}
 
 	function deleteEntry(index: number) {
-		if (confirm('Are you sure you want to delete this entry?')) {
-			expenseList.splice(index, 1);
-			localStorage.setItem('incomeList', JSON.stringify(expenseList));
-			filterByDate();
-		}
+	if (confirm('Are you sure you want to delete this entry?')) {
+		expenseList.splice(index, 1);
+		localStorage.setItem('expenseList', JSON.stringify(expenseList)); // <-- fixed key
+		filterByDate();
 	}
+}
+
 
 	function editEntry(index: number) {
 		const entry = expenseList[index];
@@ -57,6 +59,12 @@
 	$: if (!showComponent && browser) {
 		loadData();
 	}
+
+	function handleDateChange(event: CustomEvent<FilterOptions>) {
+		fromDate = event.detail.fromDate;
+		toDate = event.detail.toDate;
+	}
+
 </script>
 
 {#if showComponent}
@@ -66,22 +74,12 @@
 	<div class="mx-auto max-w-3xl p-6 dark:bg-gray-800 dark:text-gray-200">
 		<!-- Top Bar -->
 		<div class="mb-6 flex items-center justify-between">
-			<div class="space-x-4">
-				<input
-					type="date"
-					bind:value={fromDate}
-					class="rounded border px-3 py-1 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
-					placeholder="From"
-					on:change={filterByDate}
-				/>
-				<input
-					type="date"
-					bind:value={toDate}
-					class="rounded border px-3 py-1 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
-					placeholder="To"
-					on:change={filterByDate}
-				/>
-			</div>
+
+			{#if expenseList.length > 0}
+			<DateFilter bind:fromDate bind:toDate {filterByDate} on:dateChange={handleDateChange} />
+		{:else}
+			<p class="text-gray-500 dark:text-gray-400">No income records available.</p>
+		{/if}
 
 			<button
 				on:click={handleClick}

@@ -1,14 +1,7 @@
 <script>
 	import '../app.css';
-	let isOpen = false;
-
-	function toggleMenu() {
-		isOpen = !isOpen;
-	}
-
-	function closeMenu() {
-		isOpen = false;
-	}
+	import MobileNavbar from '../components/layout/MobileNavbar.svelte';
+	import Navbar from '../components/layout/Navbar.svelte';
 
 	let darkMode = false;
 
@@ -19,63 +12,23 @@
 	}
 </script>
 
-<nav class="bg-blue-900 shadow-lg dark:bg-gray-800 dark:text-white">
+<nav class=" shadow-sm dark:bg-gray-800 dark:text-white">
 	<div class="container mx-auto flex items-baseline justify-between px-4 py-3">
 		<div class="flex items-center justify-between">
 			<!-- Logo -->
-			<a href="/" class="text-2xl font-bold text-white">FinanceTracker</a>
-
-			<!-- Toggle Button -->
-			<button
-				class="text-white focus:outline-none sm:hidden"
-				on:click={toggleMenu}
-				aria-label="Toggle Menu"
-			>
-				<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M4 6h16M4 12h16M4 18h16"
-					/>
-				</svg>
-			</button>
+			<a href="/" class="text-2xl font-bold text-blue-500">FinanceTracker</a>
 		</div>
 
 		<!-- Menu Items -->
-		<div class={`mt-4 sm:flex ${isOpen ? 'block' : 'hidden'}`}>
-			<ul class="flex flex-col gap-4 text-lg font-medium text-white sm:flex-row sm:items-center">
-				<li>
-					<a href="/" class="px-3 py-2 transition hover:text-red-300" on:click={closeMenu}
-						>Dashboard</a
-					>
-				</li>
-				<li>
-					<a href="/income" class="px-3 py-2 transition hover:text-red-300" on:click={closeMenu}
-						>Income</a
-					>
-				</li>
-				<li>
-					<a href="/expense" class="px-3 py-2 transition hover:text-red-300" on:click={closeMenu}
-						>Expense</a
-					>
-				</li>
-				<li>
-					<a
-						href="/saving_goals"
-						class="px-3 py-2 transition hover:text-red-300"
-						on:click={closeMenu}>Saving Goals</a
-					>
-				</li>
-			</ul>
-		</div>
+		<Navbar />
+		<MobileNavbar />
 
 		<div>
 			{#if !darkMode}
 				<button
 					on:click={toggleDarkMode}
 					aria-label="Toggle dark mode"
-					class="cursor-pointer text-white"
+					class="cursor-pointer text-blue-500"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -119,4 +72,3 @@
 </nav>
 
 <slot />
-
