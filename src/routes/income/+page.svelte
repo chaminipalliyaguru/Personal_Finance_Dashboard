@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
+
+	// components
 	import AddIncomButton from '../../components/feature/income/AddIncomButton.svelte';
 	import DateFilter from '../../components/feature/income/DateFilter.svelte';
 	import FeedbackArea from '../../components/feature/income/FeedbackArea.svelte';
@@ -24,13 +27,10 @@
 	}
 
 	function loadData() {
-		if (!browser) return;
-		// get the data from local storage
 		const storedData = localStorage.getItem('incomeList');
 		incomeList = storedData ? JSON.parse(storedData) : [];
 		filteredList = [...incomeList];
 	}
-
 
 	function handleDateChange(event: CustomEvent<FilterOptions>) {
 		fromDate = event.detail.fromDate;
@@ -42,14 +42,10 @@
 			filteredList = [...incomeList];
 			return;
 		}
-
-
 		if (new Date(fromDate) > new Date(toDate)) {
 			alert('Invalid date range. Please select a valid range.');
 			return;
 		}
-
-
 		filteredList = incomeList.filter((entry) => {
 			const entryDate = new Date(entry.date);
 			return entryDate >= new Date(fromDate) && entryDate <= new Date(toDate);
@@ -64,7 +60,6 @@
 		}
 	}
 
-
 	function clearFilter() {
 		fromDate = '';
 		toDate = '';
@@ -75,21 +70,18 @@
 		const entry = incomeList[index];
 		if (!entry) return;
 		editableIncome.set(entry);
-
 		showNewIncomeComponent = true;
 	}
 
-	$: if (!showNewIncomeComponent && browser) {
-		showComponent = true;
-	}
-
-	$: if (!showComponent && browser) {
-		loadData();
-	}
+	// Load data on mount
+	onMount(() => {
+		if (browser) loadData();
+	});
 </script>
 
 
-{#if showComponent}
+
+{#if showNewIncomeComponent}
 	<div class="m-5">
 		<NewIncome on:close={handleCloseForm} />
 	</div>

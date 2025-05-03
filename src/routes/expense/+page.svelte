@@ -45,7 +45,7 @@
 
 		if (confirm('Are you sure you want to delete this entry?')) {
 			expenseList.splice(index, 1);
-			localStorage.setItem('incomeList', JSON.stringify(expenseList));
+			localStorage.setItem('expenseList', JSON.stringify(expenseList));
 			filterByDate();
 		}
 	}
