@@ -1,11 +1,12 @@
-<script>
-	import Investing from "../routes/Investing/+page.svelte";
+<script lang="ts">
+	import Investing from "../routes/income/+page.svelte";
 	import { editableIncome } from "../store/incomeStore";
 	import { onMount } from "svelte";
 
 	let source = '';
 	let amount = '';
 	let date = '';
+	let title = '';
 	let output = false;
 	let successMessage = '';
 	let isEditMode = false;
@@ -14,7 +15,7 @@
 	onMount(() => {
 		const storedEditable = $editableIncome;
 		if (storedEditable && storedEditable.source && storedEditable.date) {
-			source = storedEditable.source;
+			source = storedEditable.title;
 			amount = storedEditable.amount;
 			date = storedEditable.date;
 			isEditMode = true;
@@ -23,7 +24,7 @@
 			const existingList = JSON.parse(localStorage.getItem('incomeList')) || [];
 			editIndex = existingList.findIndex(
 				(income) =>
-					income.source === storedEditable.source &&
+					income.title === storedEditable.source &&
 					income.amount === storedEditable.amount &&
 					income.date === storedEditable.date
 			);
@@ -34,7 +35,7 @@
 		let existingList = JSON.parse(localStorage.getItem('incomeList')) || [];
 
 		const updatedIncome = {
-			source,
+			title,
 			amount: parseFloat(amount),
 			date
 		};
@@ -57,7 +58,7 @@
 		}, 3000);
 
 		// Clear fields and reset edit mode
-		source = '';
+		title = '';
 		amount = '';
 		date = '';
 		isEditMode = false;
@@ -71,7 +72,7 @@
 </script>
 
 {#if output}
-	<p class="text-xl font-semibold bg-green-100 border text-green-800 rounded-lg text-center shadow-md animate-fade-in">
+	<p class="text-xl font-semibold bg-green-100 text-green-800 rounded-lg text-center shadow-md animate-fade-in">
 		{successMessage}
 	</p>
 	<Investing />
@@ -91,7 +92,7 @@
 				<label class="block text-gray-700">Source</label>
 				<input
 					type="text"
-					bind:value={source}
+					bind:value={title}
 					class="w-full rounded border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
 					required
 				/>

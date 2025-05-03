@@ -4,9 +4,10 @@
 	import Chart from 'chart.js/auto';
 
 	let chartInstance;
-	export let saved = 0;
-	export let invested = 0;
-	export let expenses = 0;
+	export let title = '';
+	export let labels = [];
+	export let data = [];
+	export let colors = [];
 
 	let canvas;
 
@@ -18,16 +19,22 @@
 		const ctx = canvas?.getContext('2d');
 		if (!ctx) return;
 
+		const defaultColors = [
+			'#60a5fa', '#f87171', '#4ade80', '#facc15', '#a78bfa', '#fb923c', '#f472b6', '#34d399'
+		];
+
 		chartInstance = new Chart(ctx, {
 			type: 'pie',
 			data: {
-				labels: ['Savings Goals', 'Investing', 'Expenses'],
-				datasets: [{
-					label: 'Monthly Summary',
-					data: [saved, invested, expenses],
-					backgroundColor: ['#4ade80', '#60a5fa', '#f87171'],
-					borderWidth: 1
-				}]
+				labels: labels.length ? labels : ['No data'],
+				datasets: [
+					{
+						label: title || 'Pie Chart',
+						data: data.length ? data : [1], // avoid empty pie error
+						backgroundColor: colors.length ? colors : defaultColors.slice(0, data.length || 1),
+						borderWidth: 1
+					}
+				]
 			},
 			options: {
 				responsive: true,
@@ -38,6 +45,13 @@
 						labels: {
 							boxWidth: 20,
 							padding: 15
+						}
+					},
+					title: {
+						display: true,
+						text: title || 'Pie Chart',
+						font: {
+							size: 18
 						}
 					}
 				}
@@ -50,8 +64,7 @@
 		renderChart();
 	});
 
-	// Update chart whenever inputs change
-	$: if (browser && chartInstance && (saved || invested || expenses)) {
+	$: if (browser && canvas && (labels.length || data.length || title)) {
 		renderChart();
 	}
 
@@ -62,8 +75,8 @@
 	});
 </script>
 
-<div class="w-full md:w-1/2 mx-auto bg-teal-400 rounded-2xl p-4 mt-6 md:ml-8 ">
-	<div class="relative h-2/4 w-full">
-		<canvas bind:this={canvas} class="w-full h-full"></canvas>
+<div class="mx-auto mt-6 w-full rounded-2xl p-4 md:ml-8 md:w-1/2">
+	<div class="relative h-80 w-full">
+		<canvas bind:this={canvas} class="h-full w-full"></canvas>
 	</div>
 </div>

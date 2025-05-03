@@ -1,5 +1,13 @@
-<script>
+<script lang="ts">
 	import { writable } from 'svelte/store';
+	// import { goals } from '../../store/goals';
+
+	let goals = createGoalsStore();
+	let goalName = '';
+	let targetAmount = '';
+	let savedAmount = '';
+	let targetDate = '';
+	let editIndex = null;
 
 	function createGoalsStore() {
 		let storedGoals = [];
@@ -24,33 +32,39 @@
 		return { subscribe, set, update };
 	}
 
-	let goals = createGoalsStore();
-	let goalName = '';
-	let targetAmount = '';
-	let savedAmount = '';
-	let targetDate = '';
-	let editIndex = null;
+	
 
 	function addGoal() {
-		const newGoal = {
-			name: goalName,
-			target: parseFloat(targetAmount),
-			saved: parseFloat(savedAmount) || 0,
-			date: targetDate
-		};
+	goals.update((currentGoals) => {
+		if (editIndex !== null) {
+			// Add new savedAmount to previous one
+			const existingGoal = currentGoals[editIndex];
 
-		goals.update((currentGoals) => {
-			if (editIndex !== null) {
-				currentGoals[editIndex] = newGoal;
-				editIndex = null;
-			} else {
-				currentGoals.push(newGoal);
-			}
-			return [...currentGoals];
-		});
+			const updatedGoal = {
+				...existingGoal,
+				name: goalName,
+				target: parseFloat(targetAmount),
+				saved: existingGoal.saved + (parseFloat(savedAmount) || 0),
+				date: targetDate
+			};
 
-		goalName = targetAmount = savedAmount = targetDate = '';
-	}
+			currentGoals[editIndex] = updatedGoal;
+			editIndex = null;
+		} else {
+			const newGoal = {
+				name: goalName,
+				target: parseFloat(targetAmount),
+				saved: parseFloat(savedAmount) || 0,
+				date: targetDate
+			};
+			currentGoals.push(newGoal);
+		}
+		return [...currentGoals];
+	});
+
+	goalName = targetAmount = savedAmount = targetDate = '';
+}
+
 
 	function editGoal(index) {
 		goals.subscribe((gs) => {

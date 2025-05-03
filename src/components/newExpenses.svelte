@@ -1,6 +1,7 @@
 <script>
 	import { createEventDispatcher, onMount } from 'svelte';
-	import { editableExpense } from "../store/expenseStore";
+	import { editableExpense } from '../store/expenseStore';
+	import Expense from '../routes/expense/+page.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -20,7 +21,7 @@
 	}
 
 	onMount(() => {
-		const unsubscribe = editableExpense.subscribe(data => {
+		const unsubscribe = editableExpense.subscribe((data) => {
 			if (data) {
 				title = data.title;
 				amount = data.amount;
@@ -29,10 +30,9 @@
 				isEditMode = true;
 
 				const existingList = JSON.parse(localStorage.getItem('expenseList')) || [];
-				originalIndex = existingList.findIndex(item =>
-					item.title === data.title &&
-					item.amount === data.amount &&
-					item.date === data.date
+				originalIndex = existingList.findIndex(
+					(item) =>
+						item.title === data.title && item.amount === data.amount && item.date === data.date
 				);
 			}
 		});
@@ -52,57 +52,89 @@
 		}
 
 		localStorage.setItem('expenseList', JSON.stringify(existingList));
-		output = true;
 
+		output = true;
 		setTimeout(() => {
 			successMessage = '';
-			closeForm(); // go back after success
 		}, 2000);
 	}
 </script>
 
 {#if output}
-	<p class="text-xl font-semibold bg-green-100 border text-green-800 rounded-lg text-center shadow-md animate-fade-in">{successMessage}</p>
+	<p
+		class="animate-fade-in rounded-lg bg-green-100 text-center text-xl font-semibold text-green-800 shadow-md"
+	>
+		{successMessage}
+	</p>
+
+	<Expense />
 {:else}
-<div class="relative max-w-md mx-auto mt-6 bg-white shadow-md rounded px-8 pt-6 pb-8">
-
-	<!-- ❌ Cross icon -->
-	<button class="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-xl" on:click={closeForm} title="Close">
-		&times;
-	</button>
-
-	<h2 class="text-2xl font-bold mb-4 text-red-700">Add New Expense</h2>
-
-	<form on:submit|preventDefault={setLocalData} class="space-y-4">
-		<!-- Form Fields -->
-		<!-- Title -->
-		<div>
-			<label class="block text-gray-700">Title</label>
-			<input type="text" bind:value={title} class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500" required />
-		</div>
-
-		<!-- Amount -->
-		<div>
-			<label class="block text-gray-700">Amount</label>
-			<input type="number" bind:value={amount} min="0" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500" required />
-		</div>
-
-		<!-- Category -->
-		<div>
-			<label class="block text-gray-700">Category</label>
-			<input type="text" bind:value={category} class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500" required />
-		</div>
-
-		<!-- Date -->
-		<div>
-			<label class="block text-gray-700">Date</label>
-			<input type="date" bind:value={date} class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500" required />
-		</div>
-
-		<!-- Submit -->
-		<button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded">
-			{isEditMode ? 'Update Expense' : 'Add Expense'}
+	<div class="relative mx-auto mt-6 max-w-md rounded bg-white px-8 pt-6 pb-8 shadow-md">
+		<!-- ❌ Cross icon -->
+		<button
+			class="absolute top-2 right-2 text-xl text-gray-600 hover:text-red-600"
+			on:click={closeForm}
+			title="Close"
+		>
+			&times;
 		</button>
-	</form>
-</div>
+
+		<h2 class="mb-4 text-2xl font-bold text-red-700">Add New Expense</h2>
+
+		<form on:submit|preventDefault={setLocalData} class="space-y-4">
+			<!-- Form Fields -->
+			<!-- Title -->
+			<div>
+				<label class="block text-gray-700">Title</label>
+				<input
+					type="text"
+					bind:value={title}
+					class="w-full rounded border px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none"
+					required
+				/>
+			</div>
+
+			<!-- Amount -->
+			<div>
+				<label class="block text-gray-700">Amount</label>
+				<input
+					type="number"
+					bind:value={amount}
+					min="0"
+					class="w-full rounded border px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none"
+					required
+				/>
+			</div>
+
+			<!-- Category -->
+			<div>
+				<label class="block text-gray-700">Category</label>
+				<input
+					type="text"
+					bind:value={category}
+					class="w-full rounded border px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none"
+					required
+				/>
+			</div>
+
+			<!-- Date -->
+			<div>
+				<label class="block text-gray-700">Date</label>
+				<input
+					type="date"
+					bind:value={date}
+					class="w-full rounded border px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none"
+					required
+				/>
+			</div>
+
+			<!-- Submit -->
+			<button
+				type="submit"
+				class="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+			>
+				{isEditMode ? 'Update Expense' : 'Add Expense'}
+			</button>
+		</form>
+	</div>
 {/if}

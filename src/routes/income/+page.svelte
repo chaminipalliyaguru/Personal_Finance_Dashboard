@@ -1,22 +1,26 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import AddIncomButton from '../../components/feature/income/AddIncomButton.svelte';
+	import DateFilter from '../../components/feature/income/DateFilter.svelte';
+	import FeedbackArea from '../../components/feature/income/FeedbackArea.svelte';
+	import IncomeMethodItem from '../../components/feature/income/IncomeMethodItem.svelte';
 	import NewIncome from '../../components/newIncome.svelte';
 	import { editableIncome } from '../../store/incomeStore';
-	import type { IncomeEntry } from '../../types/types';
+	import type { FilterOptions, IncomeEntry } from '../../types/types';
 
-	let showComponent = false;
+	let showNewIncomeComponent = false;
 	let incomeList: IncomeEntry[] = [];
 	let filteredList: IncomeEntry[] = [];
-	let fromDate: Date | null = null;
-	let toDate: Date | null = null;
+	let fromDate: string = '';
+	let toDate: string = '';
 
-	function handleClick() {
+	function handleNewIncomeCreate() {
 		editableIncome.set(null);
-		showComponent = true;
+		showNewIncomeComponent = true;
 	}
 
 	function handleCloseForm() {
-		showComponent = false;
+		showNewIncomeComponent = false;
 	}
 
 	function loadData() {
@@ -27,11 +31,24 @@
 		filteredList = [...incomeList];
 	}
 
+
+	function handleDateChange(event: CustomEvent<FilterOptions>) {
+		fromDate = event.detail.fromDate;
+		toDate = event.detail.toDate;
+	}
+
 	function filterByDate() {
 		if (!fromDate || !toDate) {
 			filteredList = [...incomeList];
 			return;
 		}
+
+
+		if (new Date(fromDate) > new Date(toDate)) {
+			alert('Invalid date range. Please select a valid range.');
+			return;
+		}
+
 
 		filteredList = incomeList.filter((entry) => {
 			const entryDate = new Date(entry.date);
@@ -47,10 +64,22 @@
 		}
 	}
 
+
+	function clearFilter() {
+		fromDate = '';
+		toDate = '';
+		filteredList = [...incomeList];
+	}
+
 	function editEntry(index: number) {
 		const entry = incomeList[index];
 		if (!entry) return;
 		editableIncome.set(entry);
+
+		showNewIncomeComponent = true;
+	}
+
+	$: if (!showNewIncomeComponent && browser) {
 		showComponent = true;
 	}
 
@@ -58,6 +87,7 @@
 		loadData();
 	}
 </script>
+
 
 {#if showComponent}
 	<div class="m-5">
@@ -68,82 +98,33 @@
 	<div
 		class="mx-auto mt-12 max-w-3xl bg-white p-6 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
 	>
-		<button
-			on:click={handleClick}
-			class="my-5 cursor-pointer rounded bg-blue-600 px-6 py-2 font-semibold text-white shadow transition duration-200 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
-		>
-			Add Income
-		</button>
-		<!-- Top Bar -->
-		<p class="text-sm">Filter Records by Date:</p>
-		<div class="mb-6 flex items-center justify-between">
-			<div class="items-center space-x-4 md:flex">
-				<div>
-					<p class="text-sm">From:</p>
-					<input
-						type="date"
-						bind:value={fromDate}
-						class="rounded border bg-gray-100 px-3 py-1 text-gray-900 dark:bg-gray-700 dark:text-gray-100"
-						placeholder="From"
-						on:change={filterByDate}
-					/>
-				</div>
-				<div>
-					<p class="text-sm">To:</p>
-					<input
-						type="date"
-						bind:value={toDate}
-						class="rounded border bg-gray-100 px-3 py-1 text-gray-900 dark:bg-gray-700 dark:text-gray-100"
-						placeholder="To"
-						on:change={filterByDate}
-					/>
-				</div>
-			</div>
-		</div>
+
+	<div class="grid grid-cols-2">
+		<div>
+		<!-- Date Filter Component -->
+		{#if incomeList.length > 0}
+			<DateFilter bind:fromDate bind:toDate {filterByDate} on:dateChange={handleDateChange} />
+		{:else}
+			<p class="text-gray-500 dark:text-gray-400">No income records available.</p>
+		{/if}
+	</div>
+
+		<div class="ml-56">
+		<!-- Add income button -->
+		<AddIncomButton {handleNewIncomeCreate} />
+	</div>
+	</div>
+
 
 		<!-- Records Section -->
 		{#if filteredList.length > 0}
 			{#each filteredList as entry, index}
-				<div
-					class="relative mb-4 rounded-lg border border-gray-300 bg-white p-4 shadow-sm dark:border-gray-600 dark:bg-gray-800"
-				>
-					<div class="absolute top-2 right-2 space-x-2">
-						<button
-							on:click={() => editEntry(index)}
-							title="Edit"
-							class="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500"
-						>
-							✏️
-						</button>
-						<button
-							on:click={() => deleteEntry(index)}
-							title="Delete"
-							class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500"
-						>
-							🗑️
-						</button>
-					</div>
-					<p class="font-bold text-blue-700 dark:text-blue-400">Record {index + 1}</p>
-					<p><span class="font-semibold">Source:</span> {entry.source}</p>
-					<p><span class="font-semibold">Amount:</span> {entry.amount}</p>
-					<p><span class="font-semibold">Date:</span> {entry.date}</p>
-				</div>
+
+				<IncomeMethodItem {entry} {index} {deleteEntry} {editEntry} />
 			{/each}
 		{:else}
-			<p class="text-gray-500 dark:text-gray-400">No income records found for selected range.</p>
-			<!--  clear filter button -->
-			{#if fromDate || toDate}
-				<button
-					on:click={() => {
-						fromDate = '';
-						toDate = '';
-						filterByDate();
-					}}
-					class="mt-4 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
-				>
-					Clear Filter
-				</button>
-			{/if}
+		<FeedbackArea {fromDate} {toDate} {clearFilter} />
+
 		{/if}
 	</div>
 {/if}
